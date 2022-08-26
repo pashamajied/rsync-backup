@@ -16,19 +16,23 @@ Be sure to edit the configuration options at the beginning of the script to matc
 
 4. Edit the configuration options at the beginning of the script to match your environment prior to executing.
 <pre>
+#telegram conf
+GROUP_ID=xxxxxxxxx
+BOT_TOKEN=xxxxxxxxxx:xxxxxxxxxxxx-xxxxxxx-xxxxxxxxxxxxxx
+
 #----------------------------------------
 # connection info
 #----------------------------------------
-REMOTE_HOST=yourserver.yourdomain.com
-REMOTE_USER=username
-REMOTE_PASSWORD=password123
+REMOTE_HOST=xxx.xx.xxx.x
+REMOTE_USER=xxxx
+REMOTE_PASSWORD=xxxx
 REMOTE_PORT=22
 
-# path to backup to files to
+# local path to download the files to
 LOCAL_PATH=/home/pi/backup
 
-# path to pull the files from
-REMOTE_PATH=/www/wwwroot/*
+# remote path to get the files from
+REMOTE_PATH=/var/www/*
 </pre>
 
 5. Make the script executable
