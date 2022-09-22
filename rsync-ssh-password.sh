@@ -1,12 +1,17 @@
-#!/bin/sh
+#!/bin/bash
 
-#Date
-DATE=$(date "+%Y-%m-%d %H:%M:%S")
+#----------------------------------------
+# date info
+#----------------------------------------
+DATETIME=$(date "+%Y-%m-%d %H:%M:%S")
+YEAR=$(date +%Y)
+MONTH=$(date +%m)
 
-#telegram conf
+#----------------------------------------
+# telegram conf
+#----------------------------------------
 GROUP_ID=xxxxxxxxx
 BOT_TOKEN=xxxxxxxxxx:xxxxxxxxxxxx-xxxxxxx-xxxxxxxxxxxxxx
-
 
 #----------------------------------------
 # connection info
@@ -20,14 +25,20 @@ REMOTE_PORT=22
 LOCAL_PATH=/home/pi/backup
 
 # remote path to get the files from
-REMOTE_PATH=/var/www/*
+REMOTE_PATH=/www/wwwroot
 #----------------------------------------
 
-TEXT="Backup folder $REMOTE_PATH pada server $REMOTE_HOST BERHASIL dilakukan pada tanggal $DATE"
-echo "$TEXT"
+if [ ! -d "$LOCAL_PATH/$YEAR/$MONTH/$DAY" ];
+  then mkdir --parents $LOCAL_PATH/$YEAR/$MONTH/$DAY;
+fi
 
-sshpass -p $REMOTE_PASSWORD /usr/bin/rsync -rsh -e ssh $REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH $LOCAL_PATH
+TEXT="Backup folder $REMOTE_PATH pada server $REMOTE_HOST dengan tujuan $LOCAL_PATH/$YEAR/$MONTH/wwwroot-$DATETIME.tar.gz BERHASIL dilakukan pada tanggal $DATETIME"
+
+sshpass -p $REMOTE_PASSWORD /usr/bin/rsync -rsh -e ssh $REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH $LOCAL_PATH/$YEAR/$MONTH/
 sleep 1
 curl -s --data "text=$TEXT" --data "chat_id=$GROUP_ID" 'https://api.telegram.org/bot'$BOT_TOKEN'/sendMessage?parse_mode=HTML'
+
+tar -cvf $LOCAL_PATH/$YEAR/$MONTH/wwwroot-$DATETIME.tar.gz $LOCAL_PATH/$YEAR/$MONTH/
+rm -rf $LOCAL_PATH/$YEAR/$MONTH/wwwroot
 
 echo "Done"
