@@ -28,8 +28,8 @@ LOCAL_PATH=/home/pi/backup
 REMOTE_PATH=/www/wwwroot
 #----------------------------------------
 
-if [ ! -d "$LOCAL_PATH/$YEAR/$MONTH/$DAY" ];
-  then mkdir --parents $LOCAL_PATH/$YEAR/$MONTH/$DAY;
+if [ ! -d "$LOCAL_PATH/$YEAR/$MONTH" ];
+  then mkdir --parents $LOCAL_PATH/$YEAR/$MONTH;
 fi
 
 TEXT="Backup folder $REMOTE_PATH pada server $REMOTE_HOST dengan tujuan $LOCAL_PATH/$YEAR/$MONTH/wwwroot-$DATETIME.tar.gz BERHASIL dilakukan pada tanggal $DATETIME"
