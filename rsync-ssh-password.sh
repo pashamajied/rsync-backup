@@ -3,14 +3,15 @@
 #----------------------------------------
 # date info
 #----------------------------------------
-DATETIME=$(date "+%Y-%m-%d %H:%M:%S")
+DATETIME=$(date "+%Y-%m-%d_%H:%M:%S")
+DATE=$(date "+%Y-%m-%d")
 YEAR=$(date +%Y)
 MONTH=$(date +%m)
 
 #----------------------------------------
 # telegram conf
 #----------------------------------------
-GROUP_ID=xxxxxxxxx
+CHAT_ID=xxxxxxxxx
 BOT_TOKEN=xxxxxxxxxx:xxxxxxxxxxxx-xxxxxxx-xxxxxxxxxxxxxx
 
 #----------------------------------------
@@ -28,17 +29,27 @@ LOCAL_PATH=/home/pi/backup
 REMOTE_PATH=/www/wwwroot
 #----------------------------------------
 
+# Prepare values
+function prep ()
+{
+	echo "$1" | sed -e 's/^ *//g' -e 's/ *$//g' | sed -n '1 p'
+}
+
+#----------------------------------------
+# OS details
+#----------------------------------------
+hostname=$(prep "$(hostname)")
+
 if [ ! -d "$LOCAL_PATH/$YEAR/$MONTH" ];
   then mkdir --parents $LOCAL_PATH/$YEAR/$MONTH;
 fi
 
-TEXT="Backup folder $REMOTE_PATH pada server $REMOTE_HOST dengan tujuan $LOCAL_PATH/$YEAR/$MONTH/wwwroot-$DATETIME.tar.gz BERHASIL dilakukan pada tanggal $DATETIME"
+TEXT="Hostname = $hostname [$DATE] %0ABackup folder = $REMOTE_PATH %0APada Server = $REMOTE_HOST %0Adengan tujuan $LOCAL_PATH/$YEAR/$MONTH/wwwroot-$DATETIME.tar.gz %0ABERHASIL"
 
 sshpass -p $REMOTE_PASSWORD /usr/bin/rsync -rsh -e ssh $REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH $LOCAL_PATH/$YEAR/$MONTH/
 sleep 1
-curl -s --data "text=$TEXT" --data "chat_id=$GROUP_ID" 'https://api.telegram.org/bot'$BOT_TOKEN'/sendMessage?parse_mode=HTML'
+curl -s --data "text=$TEXT" --data "chat_id=$GROUP_ID" 'https://api.telegram.org/bot'$BOT_TOKEN'/sendMessage'
 
 tar -cvf $LOCAL_PATH/$YEAR/$MONTH/wwwroot-$DATETIME.tar.gz $LOCAL_PATH/$YEAR/$MONTH/
+sleep 1
 rm -rf $LOCAL_PATH/$YEAR/$MONTH/wwwroot
-
-echo "Done"
