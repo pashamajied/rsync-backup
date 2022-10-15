@@ -3,8 +3,8 @@
 #----------------------------------------
 # date info
 #----------------------------------------
-DATETIME=$(date "+%Y-%m-%d_%H:%M:%S")
-DATE=$(date "+%Y-%m-%d")
+DATETIME=$(date "+%d%m%Y-%H:%M")
+TIME=$(date "+%H:%M:%S")
 YEAR=$(date +%Y)
 MONTH=$(date +%m)
 
@@ -44,7 +44,7 @@ if [ ! -d "$LOCAL_PATH/$YEAR/$MONTH" ];
   then mkdir --parents $LOCAL_PATH/$YEAR/$MONTH;
 fi
 
-TEXT="Hostname = $hostname [$DATE] %0ABackup folder = $REMOTE_PATH %0APada Server = $REMOTE_HOST %0Adengan tujuan $LOCAL_PATH/$YEAR/$MONTH/wwwroot-$DATETIME.tar.gz %0ABERHASIL"
+TEXT="Hostname = $hostname [$TIME] %0ABackup folder = $REMOTE_PATH %0APada Server = $REMOTE_HOST %0Adengan tujuan $LOCAL_PATH/$YEAR/$MONTH/wwwroot-$DATETIME.tar.gz %0ABERHASIL"
 
 sshpass -p $REMOTE_PASSWORD /usr/bin/rsync -rsh -e ssh $REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH $LOCAL_PATH/$YEAR/$MONTH/
 sleep 1
