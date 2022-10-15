@@ -12,7 +12,7 @@ Be sure to edit the configuration options at the beginning of the script to matc
 
 3. Download the script(s).
 
-```wget https://raw.githubusercontent.com/pashamajied/rsync-backup/master/rsync-ssh-password.sh```
+<pre>wget https://raw.githubusercontent.com/pashamajied/rsync-backup/master/rsync-ssh-password.sh</pre>
 
 4. Edit the configuration options at the beginning of the script to match your environment prior to executing.
 <pre>
